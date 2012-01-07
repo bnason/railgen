@@ -1,0 +1,732 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <title>PvE Rail Network</title>
+    <style type='text/css'>
+      /*<![CDATA[*/
+        body
+        {
+            font-family: Verdana;
+            font-size: 8pt;
+        }
+        
+        /* The main DIV for the map */
+        #subway-map
+        {
+            margin: 0;
+            width: 1200px;
+            height: 1200px;
+            background-color: white;
+        }
+        
+        /* Text labels */
+        .text
+        {
+            text-decoration: none;
+            color: black;
+        }
+        
+        #legend
+        {
+            float: left;
+            width: 0px;
+            height:0px;
+        /*visibility:hidden;*/
+        }
+        
+        #legend div
+        {
+            height: 25px;
+        }
+        
+        #legend span
+        {
+            margin: 5px 5px 5px 0;
+        }
+        #subway-map span
+        {
+            margin: 5px 5px 5px 0;
+        }
+      /*]]>*/
+    </style>
+    <script src='js/jquery.min.js' type='text/javascript'></script>
+    <script src='js/jquery.subwayMap-0.5.0.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div data-cellSize='20' data-columns='60' data-grid='true' data-legendId='legend' data-lineWidth='8' data-rows='60' data-textClass='text' id='subway-map'>
+      <ul data-label='Stations' visible='false'>
+        <li data-coords='22,22' data-marker='@station'>850 North West Transfer</li>
+        <li data-coords='22,39' data-marker='@station'>850 South West Transfer</li>
+        <li data-coords='21,22' data-marker='@station'>Agua Fria</li>
+        <li data-coords='18,14' data-marker='@station'>Andaren</li>
+        <li data-coords='35,23' data-marker='@station'>Beacon Island</li>
+        <li data-coords='46,43' data-marker='@station'>Birch Island</li>
+        <li data-coords='48,12' data-marker='@station'>Blanco</li>
+        <li data-coords='27,32' data-marker='@station'>Cathedral</li>
+        <li data-coords='17,41' data-marker='@station'>Deepholm</li>
+        <li data-coords='14,41' data-marker='@station'>Deepholm Junction</li>
+        <li data-coords='22,39' data-marker='@station'>Deorne</li>
+        <li data-coords='39,33' data-marker='@station'>Derp Town</li>
+        <li data-coords='46,15' data-marker='@station'>Diehimmel</li>
+        <li data-coords='20,19' data-marker='@station'>Dimma Vale</li>
+        <li data-coords='46,45' data-marker='@station'>East Ocean</li>
+        <li data-coords='48,30' data-marker='@station'>East Portal</li>
+        <li data-coords='39,29' data-marker='@station'>East Transfer</li>
+        <li data-coords='40,16' data-marker='@station'>Esper</li>
+        <li data-coords='40,17' data-marker='@station'>Esper PV Express</li>
+        <li data-coords='55,20' data-marker='@station'>Gobias</li>
+        <li data-coords='46,52' data-marker='@station'>Hall of Pillars</li>
+        <li data-coords='45,33' data-marker='@station'>Island/Argoth Junction</li>
+        <li data-coords='46,37' data-marker='@station'>Kilst Island</li>
+        <li data-coords='28,41' data-marker='@station'>Lothos</li>
+        <li data-coords='24,41' data-marker='@station'>Lothos Desert</li>
+        <li data-coords='30,54' data-marker='@station'>Makdaam's Retreat</li>
+        <li data-coords='19,20' data-marker='@station'>Metro Hub</li>
+        <li data-coords='14,20' data-marker='@station'>Metro West</li>
+        <li data-coords='53,36' data-marker='@station'>Monkeh Island</li>
+        <li data-coords='53,33' data-marker='@station'>Monkeh/Whore Junction</li>
+        <li data-coords='25,14' data-marker='@station'>Montpellier</li>
+        <li data-coords='45,30' data-marker='@station'>New Argoth</li>
+        <li data-coords='40,35' data-marker='@station'>New Athens</li>
+        <li data-coords='15,45' data-marker='@station'>New Hempshire</li>
+        <li data-coords='30,12' data-marker='@station'>North Portal</li>
+        <li data-coords='29,22' data-marker='@station'>North Transfer</li>
+        <li data-coords='42,16' data-marker='@station'>Northeast Junction</li>
+        <li data-coords='46,39' data-marker='@station'>Not Bacon</li>
+        <li data-coords='30,45' data-marker='@station'>Nowhere</li>
+        <li data-coords='41,27' data-marker='@station'>Nuttin' Atoll</li>
+        <li data-coords='30,15' data-marker='@station'>Pico</li>
+        <li data-coords='30,16' data-marker='@station'>Pico PV Embassy</li>
+        <li data-coords='42,20' data-marker='@station'>Pleasantville</li>
+        <li data-coords='14,37' data-marker='@station'>QN Junction</li>
+        <li data-coords='30,31' data-marker='@station'>SE Terminal</li>
+        <li data-coords='30,28' data-marker='@station'>Seneca</li>
+        <li data-coords='27,30' data-marker='@station'>Snapperolle</li>
+        <li data-coords='14,24' data-marker='@station'>Snowhedge</li>
+        <li data-coords='17,14' data-marker='@station'>Something Else</li>
+        <li data-coords='30,47' data-marker='@station'>South Portal</li>
+        <li data-coords='30,39' data-marker='@station'>South Transfer</li>
+        <li data-coords='30,58' data-marker='@station'>Southquan</li>
+        <li data-coords='29,30' data-marker='@station'>Spawn Station</li>
+        <li data-coords='14,30' data-marker='@station'>Topaz West</li>
+        <li data-coords='26,46' data-marker='@station'>Unknown Station</li>
+        <li data-coords='39,37' data-marker='@station'>Wellspring</li>
+        <li data-coords='13,30' data-marker='@station'>West Portal</li>
+        <li data-coords='22,29' data-marker='@station'>West Transfer</li>
+        <li data-coords='55,31' data-marker='@station'>Whore Island</li>
+        <li data-coords='42,12' data-marker='@station'>saffsd Junction</li>
+      </ul>
+      <ul data-color='#ff0000' visible='false'>
+        <!--
+          101 - North Trunk
+        -->
+        <!--
+          Spawn Station
+        -->
+        <li data-coords='29,30'></li>
+        <!--
+          North Transfer
+        -->
+        <li data-coords='29,22'></li>
+        <!--
+          Pico
+        -->
+        <li data-coords='30,15'></li>
+      </ul>
+      <ul data-color='#ff0000' visible='false'>
+        <!--
+          102 - East Trunk
+        -->
+        <!--
+          Spawn Station
+        -->
+        <li data-coords='29,30'></li>
+        <!--
+          
+        -->
+        <li data-coords='29,29'></li>
+        <!--
+          East Transfer
+        -->
+        <li data-coords='39,29'></li>
+        <!--
+          New Argoth
+        -->
+        <li data-coords='45,30'></li>
+      </ul>
+      <ul data-color='#ff0000' visible='false'>
+        <!--
+          103 - South Trunk
+        -->
+        <!--
+          Spawn Station
+        -->
+        <li data-coords='29,30'></li>
+        <!--
+          South Transfer
+        -->
+        <li data-coords='30,39'></li>
+        <!--
+          Nowhere
+        -->
+        <li data-coords='30,45'></li>
+      </ul>
+      <ul data-color='#ff0000' visible='false'>
+        <!--
+          104 - West Trunk
+        -->
+        <!--
+          Spawn Station
+        -->
+        <li data-coords='29,30'></li>
+        <!--
+          
+        -->
+        <li data-coords='29,29'></li>
+        <!--
+          West Transfer
+        -->
+        <li data-coords='22,29'></li>
+        <!--
+          Topaz West
+        -->
+        <li data-coords='14,30'></li>
+      </ul>
+      <ul data-color='#0000ff' visible='false'>
+        <!--
+          110 - 850 Loop
+        -->
+        <!--
+          North Transfer
+        -->
+        <li data-coords='29,22'></li>
+        <!--
+          
+        -->
+        <li data-coords='39,22'></li>
+        <!--
+          East Transfer
+        -->
+        <li data-coords='39,29'></li>
+        <!--
+          Wellspring
+        -->
+        <li data-coords='39,37'></li>
+        <!--
+          
+        -->
+        <li data-coords='39,39'></li>
+        <!--
+          South Transfer
+        -->
+        <li data-coords='30,39'></li>
+        <!--
+          Deorne
+        -->
+        <li data-coords='22,39'></li>
+        <!--
+          West Transfer
+        -->
+        <li data-coords='22,29'></li>
+        <!--
+          850 North West Transfer
+        -->
+        <li data-coords='22,22'></li>
+        <li data-coords='29,22'></li>
+      </ul>
+      <ul data-color='#0000ff' visible='false'>
+        <!--
+          120 - Y70 Outer Loop
+        -->
+        <!--
+          Pico
+        -->
+        <li data-coords='30,15'></li>
+        <!--
+          Esper
+        -->
+        <li data-coords='40,16'></li>
+        <!--
+          Northeast Junction
+        -->
+        <li data-coords='42,16'></li>
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+        <!--
+          Nuttin' Atoll
+        -->
+        <li data-coords='41,27'></li>
+        <!--
+          
+        -->
+        <li data-coords='45,27'></li>
+        <!--
+          New Argoth
+        -->
+        <li data-coords='45,30'></li>
+        <!--
+          Kilst Island
+        -->
+        <li data-coords='46,37'></li>
+        <!--
+          Not Bacon
+        -->
+        <li data-coords='46,39'></li>
+        <!--
+          Birch Island
+        -->
+        <li data-coords='46,43'></li>
+        <!--
+          East Ocean
+        -->
+        <li data-coords='46,45'></li>
+        <!--
+          
+        -->
+        <li data-coords='46,46'></li>
+        <!--
+          Unknown Station
+        -->
+        <li data-coords='26,46'></li>
+        <!--
+          
+        -->
+        <li data-coords='19,46'></li>
+        <!--
+          
+        -->
+        <li data-coords='19,45'></li>
+        <!--
+          New Hempshire
+        -->
+        <li data-coords='15,45'></li>
+        <!--
+          
+        -->
+        <li data-coords='14,45'></li>
+        <!--
+          Deepholm Junction
+        -->
+        <li data-coords='14,41'></li>
+        <!--
+          QN Junction
+        -->
+        <li data-coords='14,37'></li>
+        <!--
+          Topaz West
+        -->
+        <li data-coords='14,30'></li>
+        <!--
+          Snowhedge
+        -->
+        <li data-coords='14,24'></li>
+        <!--
+          Metro West
+        -->
+        <li data-coords='14,20'></li>
+        <!--
+          
+        -->
+        <li data-coords='14,14'></li>
+        <!--
+          Something Else
+        -->
+        <li data-coords='17,14'></li>
+        <!--
+          Andaren
+        -->
+        <li data-coords='18,14'></li>
+        <!--
+          Montpellier
+        -->
+        <li data-coords='25,14'></li>
+        <!--
+          
+        -->
+        <li data-coords='29,14'></li>
+        <!--
+          
+        -->
+        <li data-coords='29,15'></li>
+        <li data-coords='30,15'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          207 - Seneca/Pleasantville
+        -->
+        <!--
+          Seneca
+        -->
+        <li data-coords='30,28'></li>
+        <!--
+          
+        -->
+        <li data-coords='30,20'></li>
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          210 - Seneca/Snapperolle
+        -->
+        <!--
+          Snapperolle
+        -->
+        <li data-coords='27,30'></li>
+        <!--
+          Seneca
+        -->
+        <li data-coords='30,28'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          220 - Wellspring/Spawn
+        -->
+        <!--
+          SE Terminal
+        -->
+        <li data-coords='30,31'></li>
+        <!--
+          Wellspring
+        -->
+        <li data-coords='39,37'></li>
+      </ul>
+      <ul data-color='#800080' visible='false'>
+        <!--
+          300 - Pico/Portal
+        -->
+        <!--
+          Pico
+        -->
+        <li data-coords='30,15'></li>
+        <!--
+          North Portal
+        -->
+        <li data-coords='30,12'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          310 - Beacon Island/Pico
+        -->
+        <!--
+          Beacon Island
+        -->
+        <li data-coords='35,23'></li>
+        <!--
+          Pico PV Embassy
+        -->
+        <li data-coords='30,16'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          320 - Metro/Dimma Vale
+        -->
+        <!--
+          Metro West
+        -->
+        <li data-coords='14,20'></li>
+        <!--
+          Metro Hub
+        -->
+        <li data-coords='19,20'></li>
+        <!--
+          Dimma Vale
+        -->
+        <li data-coords='20,19'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          321 - Metro/Agua Fria
+        -->
+        <!--
+          Metro Hub
+        -->
+        <li data-coords='19,20'></li>
+        <!--
+          Agua Fria
+        -->
+        <li data-coords='21,22'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          330 - 850 NW Aqua Fria Transfer
+        -->
+        <!--
+          850 North West Transfer
+        -->
+        <li data-coords='22,22'></li>
+        <!--
+          Agua Fria
+        -->
+        <li data-coords='21,22'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          350 - 850 SW Deorne Transfer
+        -->
+        <!--
+          850 South West Transfer
+        -->
+        <li data-coords='22,39'></li>
+        <!--
+          Deorne
+        -->
+        <li data-coords='22,39'></li>
+      </ul>
+      <ul data-color='#800080' visible='false'>
+        <!--
+          400 - New Argoth/Portal
+        -->
+        <!--
+          New Argoth
+        -->
+        <li data-coords='45,30'></li>
+        <!--
+          East Portal
+        -->
+        <li data-coords='48,30'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          410 - Monkeh Island
+        -->
+        <!--
+          Monkeh/Whore Junction
+        -->
+        <li data-coords='53,33'></li>
+        <!--
+          Monkeh Island
+        -->
+        <li data-coords='53,36'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          420 - Whore Island
+        -->
+        <!--
+          Whore Island
+        -->
+        <li data-coords='55,31'></li>
+        <!--
+          Monkeh/Whore Junction
+        -->
+        <li data-coords='53,33'></li>
+        <!--
+          Island/Argoth Junction
+        -->
+        <li data-coords='45,33'></li>
+        <!--
+          Derp Town
+        -->
+        <li data-coords='39,33'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          430 - Argoth/Wellspring
+        -->
+        <!--
+          New Argoth
+        -->
+        <li data-coords='45,30'></li>
+        <!--
+          New Athens
+        -->
+        <li data-coords='40,35'></li>
+        <!--
+          Wellspring
+        -->
+        <li data-coords='39,37'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          450 - Hall of Pillars
+        -->
+        <!--
+          New Argoth
+        -->
+        <li data-coords='45,30'></li>
+        <!--
+          Island/Argoth Junction
+        -->
+        <li data-coords='45,33'></li>
+        <!--
+          Hall of Pillars
+        -->
+        <li data-coords='46,52'></li>
+      </ul>
+      <ul data-color='#800080' visible='false'>
+        <!--
+          520 - Lothos/Portal
+        -->
+        <!--
+          Lothos
+        -->
+        <li data-coords='28,41'></li>
+        <!--
+          Nowhere
+        -->
+        <li data-coords='30,45'></li>
+        <!--
+          South Portal
+        -->
+        <li data-coords='30,47'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          530 - Southquan Rail
+        -->
+        <!--
+          South Portal
+        -->
+        <li data-coords='30,47'></li>
+        <!--
+          Makdaam's Retreat
+        -->
+        <li data-coords='30,54'></li>
+        <!--
+          Southquan
+        -->
+        <li data-coords='30,58'></li>
+      </ul>
+      <ul data-color='#000080' visible='false'>
+        <!--
+          540 - Deepholm
+        -->
+        <!--
+          Deepholm Junction
+        -->
+        <li data-coords='14,41'></li>
+        <!--
+          Deepholm
+        -->
+        <li data-coords='17,41'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          550 - Lothos/Deorne
+        -->
+        <!--
+          Lothos
+        -->
+        <li data-coords='28,41'></li>
+        <!--
+          Lothos Desert
+        -->
+        <li data-coords='24,41'></li>
+        <!--
+          Deorne
+        -->
+        <li data-coords='22,39'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          560 - Lothos/Cathdral
+        -->
+        <!--
+          Lothos
+        -->
+        <li data-coords='28,41'></li>
+        <!--
+          Cathedral
+        -->
+        <li data-coords='27,32'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          710 - PV/Pico Embassy
+        -->
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+        <!--
+          
+        -->
+        <li data-coords='30,20'></li>
+        <!--
+          Pico PV Embassy
+        -->
+        <li data-coords='30,16'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          720 - PV/Beacon Island
+        -->
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+        <!--
+          Beacon Island
+        -->
+        <li data-coords='35,23'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          730 - PV/Gobias
+        -->
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+        <!--
+          Gobias
+        -->
+        <li data-coords='55,20'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          740 - PV/Esper
+        -->
+        <!--
+          Pleasantville
+        -->
+        <li data-coords='42,20'></li>
+        <!--
+          Esper PV Express
+        -->
+        <li data-coords='40,17'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          750 - Blanco Rail
+        -->
+        <!--
+          Northeast Junction
+        -->
+        <li data-coords='42,16'></li>
+        <!--
+          saffsd Junction
+        -->
+        <li data-coords='42,12'></li>
+        <!--
+          Blanco
+        -->
+        <li data-coords='48,12'></li>
+      </ul>
+      <ul data-color='#008000' visible='false'>
+        <!--
+          760 - Diehimmel Rail
+        -->
+        <!--
+          Northeast Junction
+        -->
+        <li data-coords='42,16'></li>
+        <!--
+          Diehimmel
+        -->
+        <li data-coords='46,15'></li>
+      </ul>
+    </div>
+    <div id='legend'></div>
+    <script type='text/javascript'>
+      //<![CDATA[
+        $("#subway-map").subwayMap({debug: true});
+      //]]>
+    </script>
+  </body>
+</html>
